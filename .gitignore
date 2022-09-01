@@ -34,3 +34,6 @@ bin/*
 
 # Macos
 .DS_Store
+
+# .vscode
+.vscode
