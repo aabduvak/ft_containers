@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aabduvak <aabduvak@42istanbul.com.tr>      +#+  +:+       +#+         #
+#    By: aabduvak <aabduvak@42ISTANBUL.COM.TR>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/24 05:23:09 by aabduvak          #+#    #+#              #
-#    Updated: 2022/08/24 05:28:12 by aabduvak         ###   ########.fr        #
+#    Updated: 2022/09/01 12:56:37 by aabduvak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ END				=	"\033[0;0m"
 
 # Files
 
-SRCS			= $(wildcard *.cpp)
+SRCS			= $(wildcard sources/*.cpp)
 OBJS			= $(SRCS:%.cpp=bin/%.o)
 BIN				= ./bin
 LOG				= output.file

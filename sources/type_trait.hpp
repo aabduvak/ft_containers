@@ -6,12 +6,20 @@
 /*   By: aabduvak <aabduvak@42ISTANBUL.COM.TR>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 06:02:34 by aabduvak          #+#    #+#             */
-/*   Updated: 2022/09/01 07:08:57 by aabduvak         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:51:50 by aabduvak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPE_TRAIT_HPP
 # define TYPE_TRAIT_HPP
+
+/**
+ * @brief Substitution failure is not an error (SFINAE) refers to a situation in C++ where an invalid substitution of template parameters is not in itself an error. David Vandevoorde first introduced the acronym SFINAE to describe related programming techniques.
+ *
+ * Detailed explanation
+ * @link https://youtu.be/mNxAqLVIaW0 @endlink
+ * @link https://habr.com/ru/post/205772/ @endlink
+ */
 
 namespace ft
 {
