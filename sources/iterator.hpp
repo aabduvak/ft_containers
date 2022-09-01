@@ -6,15 +6,15 @@
 /*   By: aabduvak <aabduvak@42ISTANBUL.COM.TR>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 00:20:51 by aabduvak          #+#    #+#             */
-/*   Updated: 2022/09/01 03:13:42 by aabduvak         ###   ########.fr       */
+/*   Updated: 2022/09/01 03:23:29 by aabduvak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_HPP
-#define ITERATOR_HPP
+# define ITERATOR_HPP
 
-#include <iterator>
-#include <cstddef> // in the C standard library as <stddef.h>. Types: size_t, ptrdiff_t, nullptr_t
+# include <iterator>
+# include <cstddef> // in the C standard library as <stddef.h>. Types: size_t, ptrdiff_t, nullptr_t
 
 namespace ft
 {
@@ -23,7 +23,7 @@ namespace ft
      * std::iterator_traits is the type trait class that provides uniform interface to the properties of LegacyIterator types. This makes it possible to implement algorithms only in terms of iterators.
      * The template can be specialized for user-defined iterators so that the information about the iterator can be retrieved even if the type does not provide the usual typedefs.
      *
-     * @tparam 	Iter - the iterator type to retrieve properties for
+     * @param Iter - the iterator type to retrieve properties for
      *
      * @link https://en.cppreference.com/w/cpp/iterator/iterator_traits @endlink
      */
