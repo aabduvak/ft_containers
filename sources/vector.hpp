@@ -316,6 +316,282 @@ namespace ft
                     _alloc.deallocate(_start, capacity());
                 }
             }
+        
+        public:
+            // Iterators
+            iterator begin() { return iterator(_start); }
+            const_iterator begin() const { return const_iterator(_start); }
+
+            iterator end() { return iterator(_end); }
+            const_iterator end() const { return const_iterator(_end); }
+
+            reverse_iterator rbegin() { return reverse_iterator(end()); }
+            const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+
+            reverse_iterator rend() { return reverse_iterator(begin()); }
+            const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+            
+            // Element accessing
+            reference operator[](size_type pos)
+            {
+                return *(_start + pos);
+            }
+
+            const_reference operator[](size_type pos) const
+            {
+                return *(_start + pos);
+            }
+
+            reference at(size_type pos)
+            {
+                check_range(pos);
+                return (*this)[pos]; 
+            }
+
+            const_reference at(size_type pos) const
+            {
+                check_range(pos);
+                return (*this)[pos];
+            }
+
+            // Reference to first element
+            reference front()
+            {
+                return *begin();
+            }
+
+            const_reference front() const
+            {
+                return *begin();
+            }
+
+            // Reference to last element
+            reference back()
+            {
+                return *(end() - 1);
+            }
+
+            const_reference back() const
+            {
+                return *(end() - 1);
+            }
+
+            // Acessing to the pointer
+            pointer data()
+            {
+                return _start;
+            }
+
+            const_pointer data() const
+            {
+                return _start;
+            }
+
+            // Capacity functions
+            bool empty() const
+            {
+                return _start == _end;
+            }
+
+            size_type size() const
+            {
+                return static_cast<size_type>(std::distance(begin(), end()));
+            }
+           
+            // Returns max size of container
+            size_type max_size() const
+            {
+                return std::min(_alloc.max_size(),
+                                static_cast<size_type>(std::numeric_limits<difference_type>::max()));
+            }
+
+            // Allocated new vector with new capacity and frees old vector
+            void reserve(size_type new_cap)
+            {
+                if (capacity() >= new_cap)
+                    return;
+                if (new_cap > max_size())
+                    length_exception();
+
+                pointer new_start = _alloc.allocate(new_cap);
+                pointer new_end = construct_range(new_start, _start, _end);
+                deallocate_vector();
+                _start = new_start;
+                _end_cap = _start + new_cap;
+                _end = new_end;
+            }
+
+            size_type capacity() const
+            {
+                return static_cast<size_type>(std::distance(begin(), const_iterator(_end_cap)));
+            }
+
+            // Assign and get_allocator functions
+            allocator_type get_allocator() const
+            {
+                return _alloc;
+            }
+
+            void assign(size_type count, const T &value)
+            {
+                if (count > capacity())
+                {
+                    vector tmp(count, value);
+                    tmp.swap(*this);
+                }
+                else if (count > size())
+                {
+                    std::fill(begin(), end(), value);
+                    const size_type extra = count - size();
+                    _end = construct_range(_end, _end + extra, value);
+                }
+                else
+                {
+                    pointer it = std::fill_n(_start, count, value);
+                    erase_at_end(it);
+                }
+            }
+
+            template <typename InputIt>
+            void assign(InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
+            {
+                typedef typename iterator_traits<InputIt>::iterator_category category;
+                range_assign(first, last, category());
+            }
+
+            // Modifiers
+            void clear()
+            {
+                destroy_range(_start, _end);
+                _end = _start;
+            }
+
+            iterator insert(iterator pos, const value_type &value)
+            {
+                const size_type index = pos - begin();
+
+                insert(pos, 1, value);
+
+                return iterator(_start + index);
+            }
+
+            /**
+             * @brief Insert new elements with given value. Insertion starts with given position
+             * 
+             * @param pos - start position of insertion
+             * @param count - count of elements to be inserted
+             * @param value - value of elements
+             */
+            void insert(iterator pos, size_type count, const value_type &value)
+            {
+                if (count != 0)
+                {
+                    const size_type extra_space = _end_cap - _end;
+                    if (extra_space >= count)
+                    {
+                        const size_type elems_after = end() - pos;
+                        pointer old_end = _end;
+
+                        if (elems_after > count)
+                        {
+                            _end = construct_range(_end, _end - count, _end);
+                            std::copy_backward(pos.base(), old_end - count, old_end);
+                            std::fill_n(pos, count, value);
+                        }
+                        else
+                        {
+                            _end = construct_range(_end, _end + (count - elems_after), value);
+                            _end = construct_range(_end, pos.base(), old_end);
+                            std::fill(pos.base(), old_end, value);
+                        }
+                    }
+                    else
+                    {
+                        const size_type new_size = calculate_growth(count);
+                        pointer new_start = _alloc.allocate(new_size);
+                        pointer new_end;
+
+                        new_end = construct_range(new_start, _start, pos.base());
+                        new_end = construct_range(new_end, new_end + count, value);
+                        new_end = construct_range(new_end, pos.base(), _end);
+                        deallocate_vector();
+                        _start = new_start;
+                        _end = new_end;
+                        _end_cap = new_start + new_size;
+                    }
+                }
+            }
+
+            template <class InputIt>
+            void insert(iterator pos, InputIt first,
+                        typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
+            {
+                typedef typename iterator_traits<InputIt>::iterator_category category;
+                range_insert(pos, first, last, category());
+            }
+
+            void push_back(const value_type &val)
+            {
+                if (!should_grow())
+                {
+                    _alloc.construct(_end, val);
+                    ++_end;
+                }
+                else
+                    insert(end(), val);
+            }
+
+            void pop_back()
+            {
+                erase_at_end(_end - 1);
+            }
+
+            iterator erase(iterator pos)
+            {
+                if (pos + 1 != end())
+                    std::copy(pos + 1, end(), pos);
+                --_end;
+                _alloc.destroy(_end);
+                return pos;
+            }
+
+            iterator erase(iterator first, iterator last)
+            {
+                const difference_type dist = std::distance(first, last);
+                const difference_type index = std::distance(begin(), first);
+                destroy_range(first.base(), last.base());
+                if (std::distance(last, end()) > dist)
+                {
+                    iterator it = last + dist;
+                    std::copy(last, it, first);
+                    destroy_range(last.base(), it.base());
+                    std::copy(it, end(), last);
+                    destroy_range(it.base(), end().base());
+                }
+                else
+                {
+                    std::copy(last, end(), first);
+                    destroy_range(last.base(), end().base());
+                }
+                _end = _start + size() - static_cast<size_type>(dist);
+                return iterator(begin() + index);
+            }
+
+            void resize(size_type count, value_type val = value_type())
+            {
+                const size_type len = size();
+                if (count > len)
+                    insert(end(), count - len, val);
+                else if (count < len)
+                    erase_at_end(_start + count);
+            }
+
+            void swap(vector &other)
+            {
+                std::swap(_start, other._start);
+                std::swap(_end, other._end);
+                std::swap(_end_cap, other._end_cap);
+            }
     };
 } // namespace ft
 
