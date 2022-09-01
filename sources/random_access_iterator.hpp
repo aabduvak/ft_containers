@@ -6,7 +6,7 @@
 /*   By: aabduvak <aabduvak@42ISTANBUL.COM.TR>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 03:30:15 by aabduvak          #+#    #+#             */
-/*   Updated: 2022/09/01 05:10:17 by aabduvak         ###   ########.fr       */
+/*   Updated: 2022/09/01 05:16:53 by aabduvak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,92 @@ namespace ft
                 return *(_ptr + n);
             }
     };
+
+    // Comparing operators
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator==(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() == rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator==(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() == rhs.base();
+    }
+
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator!=(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() != rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator!=(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() != rhs.base();
+    }
+
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator<(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() < rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator<(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() < rhs.base();
+    }
+
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator<=(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() <= rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator<=(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() <= rhs.base();
+    }
+
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator>(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() > rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator>(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() > rhs.base();
+    }
+
+    template <typename ItL, typename ItR, typename Container>
+    inline bool operator>=(const random_access_iterator<ItL, Container> &lhs,
+                        const random_access_iterator<ItR, Container> &rhs)
+    {
+        return lhs.base() >= rhs.base();
+    }
+
+    template <typename It, typename Container>
+    inline bool operator>=(const random_access_iterator<It, Container> &lhs,
+                        const random_access_iterator<It, Container> &rhs)
+    {
+        return lhs.base() >= rhs.base();
+    }
+
 } // namespace ft
 
 #endif
