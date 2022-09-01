@@ -6,7 +6,7 @@
 /*   By: aabduvak <aabduvak@42ISTANBUL.COM.TR>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 15:41:21 by aabduvak          #+#    #+#             */
-/*   Updated: 2022/09/01 17:32:56 by aabduvak         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:52:56 by aabduvak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -592,7 +592,46 @@ namespace ft
                 std::swap(_end, other._end);
                 std::swap(_end_cap, other._end_cap);
             }
-    };
+    }; // End of vector class
+
+    // Operators
+    template <typename T, typename Allocator>
+	inline bool operator==(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
+
+	template <typename T, typename Allocator>
+	inline bool operator!=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <typename T, typename Allocator>
+	inline bool operator<(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template <typename T, typename Allocator>
+	inline bool operator>(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <typename T, typename Allocator>
+	inline bool operator<=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template <typename T, typename Allocator>
+	inline bool operator>=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(lhs < rhs);
+	}
 } // namespace ft
 
 #endif
